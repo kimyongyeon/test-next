@@ -6,7 +6,8 @@
   "scripts": {
     "prod": "npx next build && npx next start",
     "dev": "next",
-    "export": "npx next build && npx next export"
+    "debug": "nodemon server.js",
+    "export": "npx next build && npx next export && node server.js"
   },
   "keywords": [],
   "author": "",
