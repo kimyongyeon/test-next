@@ -12,9 +12,9 @@ npm run dev
 # 운영
 npm run prod
 
-# 추출
+# 추출 및 운영모드 
 npm run export
 
-# 서버구동
-node server.js
+# 디버깅모드 
+npm run debug
 
