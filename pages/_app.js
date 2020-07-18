@@ -10,6 +10,9 @@ export default function MyApp({ Component, pageProps}) {
             <Link href="/page2">
                 <a>page2</a>
             </Link>
+            <Link href="/hooks?userId=testUser">
+                <a>hooks</a>
+            </Link>
             <Component {...pageProps} />
         </div>
     );
