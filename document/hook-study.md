@@ -13,10 +13,9 @@
 ## 장점
 - 기존의 리액트의 문제를 해결해 준다. 
 
-## 훅 함수들
+# 훅 함수들
 
-### useState 
----
+# useState 
 컴포넌트의 상태값을 추가할 수 있다.
 ```
 const [name, setName] = useState('')'
@@ -62,8 +61,8 @@ function onClick() {
 }
 ```
 > 이름에서 알 수 있듯이 안정화된 API가 아니므로 꼭 필요한 경우가 아니라면 사용하지 않는게 좋다. 
----
-### useEffect   
+
+# useEffect   
 
 ## 정의
 함수 실행 시 함수 외부에서 상태를 변경하는 연산을 부수효과라고 한다.   
@@ -91,7 +90,21 @@ useEffect(
 
 > 부수효과 함수는 랜더링 할때마다 호출되기 때문에 API 통신을 불필요하게 많이 하게 된다. 
 이를 방지하기 위해서 useEffect 훅의 두번째 매개변수로 배열을 입력하면, 배열의 값이 변경되는 경우에만 함수가 호출된다.
----
+
+## 리액트가 내부적으로 훅을 처리하는 방식
+```
+let hooks = null; // useState, useEffect .. 같은 훅이라고 생각하자.
+export function useHook() {
+    hooks.push(hookData); // 각 훔 함수에서는 hooks배열에 자신의 데이터를 추가한다. 
+}
+function process_a_component_rendering(component) {
+    hooks = []; // hooks를 빈 배열로 초기화 
+    component(); // 컴포넌트 내부에서 훅을 사용한만큼 hooks 배열에 데이터가 추가된다.
+    let hooksForThisComponent = hooks; // 생성된 배열을 저장하고 hooks변수를 초기화한다.
+    hooks = null;
+}
+```
+
 # 예제소스 
 ```
 import React, { useState, useEffect } from 'react';
