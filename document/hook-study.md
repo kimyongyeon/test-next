@@ -1,3 +1,99 @@
+# 리액트 훅 기초 익히기 
+
+## 정의
+훅은 함수형 컴포넌트에 기능을 추가할 때 사용하는 함수이다. 
+
+## 하는일
+- 함수형 컴포넌트에서 상태값 관리 
+- 자식 요소에 접근 가능
+
+## 버전 
+- 16.8 이상 버전 사용 가능
+
+## 장점
+- 기존의 리액트의 문제를 해결해 준다. 
+
+## 훅 함수들
+
+### useState 
+---
+컴포넌트의 상태값을 추가할 수 있다.
+```
+const [name, setName] = useState('')'
+```
+배열의 두번째 원소는 상태값 변경 함수 
+리액트는 가능하면 상태값 변경을 배치로 처리한다. 
+상태값 변경 함수는 비동기로 처리되지만 그 순서가 보장된다. 
+
+#### 클라이언트 컴포넌트 setState와 다른점   
+- setState 메서드는 기존 상태값과 새로 입력된 값을 `병합`하지만, useState훅의 상태값 변경함수는 이전 상태값을 `덮어쓴다. `  
+```
+<input type="text"
+    value={state.name}
+    onChange={e => setState({ ...state, name: e.target.value })}
+/>
+```
+이전 상태값을 덮어쓰기 때문에 ...state와 같은 코드가 필요하다.   
+참고로 이전 상태값을 하나의 객체로 관리할 때는 useReducer훅을 사용하는게 좋다. 
+
+#### 상태값 변경이 배치로 처리되지 않는 경우 
+외부에서 관리되는 이벤트 처리 함수의 경우에는 상태값 변경이 배치로 처리되지 않는다.
+```
+function MyComponent() {
+    const [count, setCount] = useState(0);
+    useEffect(() => {
+        function onClick() {
+            setCount(prev => prev + 1);
+            setCount(prev => prev + 1);
+        }
+        window.addEventListener('click', onClick);
+        return () => window.removeEventListener('click', onClick);
+    },[]);
+}
+```  
+useEffect훅은 부수 효과를 처리하는 용도로 사용된다. 컴포넌트가 최초 랜더링 후, useEffect에 입력된 함수가 한 번만 호출되도록 작성한 코드다.
+그럼 강제로 배치를 사용하게 할 수는 없는가?
+```  
+function onClick() {
+    ReactDOM.unstable_batchedUpdates(()=> {
+        setCount(prev => prev + 1);
+        setCount(prev => prev + 1);
+    });
+}
+```
+> 이름에서 알 수 있듯이 안정화된 API가 아니므로 꼭 필요한 경우가 아니라면 사용하지 않는게 좋다. 
+---
+### useEffect   
+
+## 정의
+함수 실행 시 함수 외부에서 상태를 변경하는 연산을 부수효과라고 한다.   
+
+## 부수효과
+- API 호출하는 것
+- 이벤트처리 함수를 등록/해제 
+> 정확히 말하면 부수 효과 함수는 랜더링 결과가 실제 돔에 반영된 후에 비동기로 호출된다. 
+
+```
+useEffect(
+    () => {
+        const fetchState = { cancel: false };
+        console.log("useEffect: " + fetchState.cancel);
+        fetchUser(fetchState);
+        // effect 이후에 어떻게 정리(clean-up)할 것인지 표시합니다. 
+        return function cleanup() {
+            console.log("cleanup: " + fetchState.cancel);
+            fetchState.cancel = true;
+        }
+    },
+    [userId],
+);
+```  
+
+> 부수효과 함수는 랜더링 할때마다 호출되기 때문에 API 통신을 불필요하게 많이 하게 된다. 
+이를 방지하기 위해서 useEffect 훅의 두번째 매개변수로 배열을 입력하면, 배열의 값이 변경되는 경우에만 함수가 호출된다.
+---
+# 예제소스 
+```
 import React, { useState, useEffect } from 'react';
 import { subscribeToUserStatus, unsubscribeToUserStatus } from '../src/util';
 
@@ -142,3 +238,4 @@ function MyComponent() {
 }
 
 export default Profile;
+```
