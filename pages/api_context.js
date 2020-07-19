@@ -27,6 +27,8 @@ function App() {
     );
 }
 
+// helloCount 속성만 변경하는데도, 사용자 데이터리ㅡㄹ 만들어서 setUser 함수에 입력해야 한다는 단점이 있다
+// 리액트에서 제공하는 useReducer훅을 사용하면 이를 개선할 수 있다.
 function Greeting() {
     return (
         <SetUserContext.Consumer>
