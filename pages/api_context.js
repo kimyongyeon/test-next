@@ -1,24 +1,32 @@
+const UserContext = React.createContext('');
+
 // Context API로 데이터 전달하기 
 function App() {
     return (
         <div>
-            <div>상단메뉴</div>
-            <Profile username="mike" />
-            <div>하단메뉴</div>
+            <UserContext.Provider value="mike">
+                <div>상단메뉴</div>
+                <Profile />
+                <div>하단메뉴</div>
+            </UserContext.Provider>
         </div>
     );
 }
 
-function Profile({username}) {
+function Profile() {
     return (
         <div>
-            <Greeting username={username} />
+            <Greeting />
         </div>
     );
 }
 
-function Greeting({username}) {
-    return <p>{`${username}님 안녕하세요.`}</p>
+function Greeting() {
+    return (
+        <UserContext.Consumer>
+            <p>{username => `${username}님 안녕하세요.`}</p>
+        </UserContext.Consumer>
+    )
 }
 
 
