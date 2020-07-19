@@ -57,4 +57,4 @@ const Profile = React.memo(() => { // memo 사용으로 최초 한번만 랜더�
     );
 });
 
-
+export default App;
