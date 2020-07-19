@@ -24,7 +24,7 @@ function App() {
     );
 }
 
-const Profile = React.memo(() => {
+const Profile = React.memo(() => { // memo 사용으로 최초 한번만 랜더링 
     return (
         <div>
             <Greeting />
@@ -34,7 +34,7 @@ const Profile = React.memo(() => {
     
 
 function Greeting() {
-    return (
+    return ( // Provider 값 바뀌면 같이 바뀐다.
         <UserContext.Consumer>
             <p>{username => `${username}님 안녕하세요.`}</p>
         </UserContext.Consumer>
