@@ -1,6 +1,10 @@
+// Context API 활용하기 
+// 여러 콘텍스트를 중첩해서 사용하기
+
 // React.createContext 함수구조
 // React.createContext(defaultValue) => {Provider, Consumer}
 const UserContext = React.createContext('');
+const ThemeContext = React.createContext('dark');
 
 // Context API로 데이터 전달하기 
 function App() {
@@ -11,15 +15,13 @@ function App() {
      */
     return (
         <div>
-
-            <UserContext.Provider value={username}>
-                <Profile />
-            </UserContext.Provider>
-            <input
-                type="text"
-                value={username}
-                onChange={e => setUsername(e.target.value)}
-            />
+            <ThemeContext.Provider value="light">
+                <UserContext.Provider value="mike">
+                    <div>상단메뉴</div>
+                    <Profile />
+                    <div>하단메뉴</div>
+                </UserContext.Provider>
+            </ThemeContext.Provider>
         </div>
     );
 }
@@ -31,13 +33,19 @@ const Profile = React.memo(() => { // memo 사용으로 최초 한번만 랜더�
         </div>
     );
 });
-    
+
 
 function Greeting() {
     return ( // Provider 값 바뀌면 같이 바뀐다.
-        <UserContext.Consumer>
-            <p>{username => `${username}님 안녕하세요.`}</p>
-        </UserContext.Consumer>
+        <ThemeContext.Consumer>
+            {theme => (
+                <UserContext.Consumer>
+                    {username => (
+                        <p style={{color: theme === 'dark' ? 'gray' : 'green'}}>{`${username}님 안녕하세요.`}</p>
+                    )}
+                </UserContext.Consumer>
+            )}
+        </ThemeContext.Consumer>
     )
 }
 
