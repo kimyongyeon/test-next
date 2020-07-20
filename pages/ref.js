@@ -14,23 +14,20 @@ const TextInput = React.forwardRef((props, ref) => ( // forwardRef 함수를 이
 ));
 
 // ref 속성값으로 고정된 함수 입력하기.
+// ref 속성값 사용 시 주의할 점 
 function Form() {
-    const INITIAL_TEXT = "안녕하세요.";
-    const [text, setText] = useState(INITIAL_TEXT);
+    const inputRef = useRef();
     const [showText, setShowText] = useState(true);
-    // useCallback 훅의 메모제이션 기능 덕분에 한번 생성된 함수를 계속 재사용한다는 것만 알아두자.
-    const setInitialText = useCallback(ref => ref && setText(INITIAL_TEXT), []);
     return (
         <div>
             {showText && (
                 <input
                     type="text"
-                    ref={setInitialText}
-                    value={text}
-                    onChange={e => setText(e.target.value)}
+                    ref={inputRef}
                 />
             )}
             <button onClick={() => setShowText(!showText)}>보이기/가리기</button>
+            <button onClick={() => inputRef.current.focus()}>텍스트로 이동</button>
         </div>
     )
 }
