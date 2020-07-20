@@ -4,16 +4,14 @@
 // ref.current : 해당 클래스의 메서드를 호출할 수 있다. 
 // useImpreativeHandle : 함수형 컴포넌트에서도 변수와 함수를 외부로 노출시킬 수 있다.
 import React, { useRef, useEffect } from 'react';
-function TextInput({inputRef}) {
-    return (
-        <div>
-            {/* 접근하고자 하는 자식 요소의 ref 속성값에 ref객체를 입력한다. 
-            해당 돔요소 혹은 컴포넌트가 생성되면 ref 객체로 접근할 수 있다. */}
-            <input type="text" ref={inputRef} />
-            <button>저장</button>
-        </div>
-    )
-}
+
+// forwardRef 함수로 ref 속성값을 직접 처리하기
+const TextInput = React.forwardRef((props, ref) => ( // forwardRef 함수를 이용하면 부모컴포넌트에서 넘어온 ref 속성값을 직접 처리할 수 있다.
+    <div>
+        <input type="text" ref={ref} />
+        <button>저장</button>
+    </div>
+));
 
 function Form() {
     const inputRef = useRef();
@@ -22,9 +20,8 @@ function Form() {
     }, []);
     return (
         <div>
-            {/* 아래 방법은 TextInput의 내부구조를 외부에서 알아야 하기 때문에 썩 좋은 방법은 아니다. 
-            따라서 손자 요소의 ref 속성값을 이용하는 방법은 꼭 필요한 경우에만 사용하기 바란다. */}
-            <TextInput inputRef={inputRef} />
+            {/* 이전 코드에서 inputRef로 사용했던 이름을 리액트의 예약어인 ref로 사용할 수 있게 됐다. */}
+            <TextInput ref={inputRef} />
             <button onClick={() => inputRef.current.focus()}>텍스트로 이동</button>
         </div>
     )
