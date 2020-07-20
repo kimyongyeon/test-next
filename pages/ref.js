@@ -18,6 +18,7 @@ function Form() {
     const INITIAL_TEXT = "안녕하세요.";
     const [text, setText] = useState(INITIAL_TEXT);
     const [showText, setShowText] = useState(true);
+    // useCallback 훅의 메모제이션 기능 덕분에 한번 생성된 함수를 계속 재사용한다는 것만 알아두자.
     const setInitialText = useCallback(ref => ref && setText(INITIAL_TEXT), []);
     return (
         <div>
