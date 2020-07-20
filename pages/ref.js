@@ -15,6 +15,8 @@ const TextInput = React.forwardRef((props, ref) => ( // forwardRef 함수를 이
 
 // ref 속성값으로 고정된 함수 입력하기.
 // ref 속성값 사용 시 주의할 점 
+// input 요소가 존재하지 않는 상태에서 텍스트이동 버튼을 누르면 inputRef 객체의 current속성은 존재하지 않기 때문에 에러가 발생한다
+// 조건부 렌더링이 사용된 요소의 ref 객체는 current 속성을 검사하는 코드가 필요하다. 
 function Form() {
     const inputRef = useRef();
     const [showText, setShowText] = useState(true);
@@ -27,7 +29,7 @@ function Form() {
                 />
             )}
             <button onClick={() => setShowText(!showText)}>보이기/가리기</button>
-            <button onClick={() => inputRef.current.focus()}>텍스트로 이동</button>
+            <button onClick={() => inputRef.current && inputRef.current.focus()}>텍스트로 이동</button>
         </div>
     )
 }
